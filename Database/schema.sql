@@ -60,9 +60,7 @@ CREATE TABLE bill_item (
 CREATE TABLE electricity_usage (
     usage_id INT PRIMARY KEY AUTO_INCREMENT,
     usage_date DATE NOT NULL UNIQUE,
-    start_time TIME NOT NULL,
     start_unit DECIMAL(10,2) NOT NULL,
-    end_time TIME,
     end_unit DECIMAL(10,2),
     units_used DECIMAL(10,2),
     rate_per_unit DECIMAL(10,2) NOT NULL,
