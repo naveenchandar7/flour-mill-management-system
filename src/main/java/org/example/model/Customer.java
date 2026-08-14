@@ -44,6 +44,10 @@ public class Customer {
    public void setVillage(String village){
        this.village=village;
    }
+    @Override
+    public String toString() {
+        return customerName + " - " + mobile;
+    }
 
 
 

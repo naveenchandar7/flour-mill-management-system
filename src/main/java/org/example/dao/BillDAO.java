@@ -25,10 +25,10 @@ public class BillDAO {
 
             statement.executeUpdate();
 
-            ResultSet generatedKeys = statement.getGeneratedKeys();
+            ResultSet resultSet = statement.getGeneratedKeys();
 
-            if (generatedKeys.next()) {
-                return generatedKeys.getInt(1);
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
             }
 
         } catch (Exception e) {
@@ -97,6 +97,31 @@ public class BillDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public int getBillCount() {
+
+        String sql = "SELECT COUNT(*) FROM bill";
+
+        try {
+
+            Connection connection =
+                    DatabaseConnection.getConnection();
+
+            PreparedStatement statement =
+                    connection.prepareStatement(sql);
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
 }

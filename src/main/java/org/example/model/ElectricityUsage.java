@@ -102,4 +102,11 @@ public class ElectricityUsage {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+    public double calculateUnitsUsed() {
+        return endUnit - startUnit;
+    }
+
+    public double calculateElectricityCost() {
+        return calculateUnitsUsed() * ratePerUnit;
+    }
 }

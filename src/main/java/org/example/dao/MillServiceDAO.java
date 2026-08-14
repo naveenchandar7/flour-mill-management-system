@@ -3,67 +3,85 @@ package org.example.dao;
 import org.example.DatabaseConnection;
 import org.example.model.MillService;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MillServiceDAO {
-    public void addService(MillService service){
-        String sql="INSERT INTO service(service_name,rate) VALUES(?,?)";
+
+    public void addService(MillService service) {
+
+        String sql = "INSERT INTO service(service_name, rate) VALUES(?, ?)";
 
         try {
-            Connection connection= DatabaseConnection.getConnection();
-            PreparedStatement statement=connection.prepareStatement(sql);
+            Connection connection = DatabaseConnection.getConnection();
+
+            PreparedStatement statement =
+                    connection.prepareStatement(sql);
 
             statement.setString(1, service.getServiceName());
             statement.setDouble(2, service.getRatePerKg());
 
             statement.executeUpdate();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void getAllServices() {
-        String sql = "SELECT * FROM service";
-        try {
 
+
+    // GET ALL SERVICES FOR BILLING DROPDOWN
+    public List<MillService> getAllServices() {
+
+        String sql = "SELECT * FROM service";
+
+        List<MillService> services = new ArrayList<>();
+
+        try {
             Connection connection = DatabaseConnection.getConnection();
 
             PreparedStatement statement =
                     connection.prepareStatement(sql);
-            ResultSet resultSet=statement.executeQuery();
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
             while (resultSet.next()) {
 
-                System.out.println("ID: " +
-                        resultSet.getInt("service_id"));
+                MillService service = new MillService(
+                        resultSet.getInt("service_id"),
+                        resultSet.getString("service_name"),
+                        resultSet.getDouble("rate")
+                );
 
-                System.out.println("Service: " +
-                        resultSet.getString("service_name"));
-
-                System.out.println("Rate: " +
-                        resultSet.getDouble("rate"));
-
-                System.out.println("--------------------");
+                services.add(service);
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 
+        return services;
     }
-    public void updateService(MillService service){
-        String sql="UPDATE service SET service_name=?,rate=? WHERE service_id=? ";
+
+
+    public void updateService(MillService service) {
+
+        String sql =
+                "UPDATE service SET service_name=?, rate=? WHERE service_id=?";
 
         try {
-            Connection connection=DatabaseConnection.getConnection();
-            PreparedStatement statement=connection.prepareStatement(sql);
+            Connection connection =
+                    DatabaseConnection.getConnection();
 
-            statement.setString(1,service.getServiceName());
-            statement.setDouble(2,service.getRatePerKg());
-            statement.setInt(3,service.getServiceId());
+            PreparedStatement statement =
+                    connection.prepareStatement(sql);
+
+            statement.setString(1, service.getServiceName());
+            statement.setDouble(2, service.getRatePerKg());
+            statement.setInt(3, service.getServiceId());
 
             statement.executeUpdate();
 
@@ -71,20 +89,26 @@ public class MillServiceDAO {
             e.printStackTrace();
         }
     }
-    public void deleteService(int service_id){
-        String sql="Delete from service where service_id=?";
 
-        try{
-            Connection connection=DatabaseConnection.getConnection();
-            PreparedStatement statement=connection.prepareStatement(sql);
 
-            statement.setInt(1,service_id);
+    public void deleteService(int serviceId) {
+
+        String sql =
+                "DELETE FROM service WHERE service_id=?";
+
+        try {
+            Connection connection =
+                    DatabaseConnection.getConnection();
+
+            PreparedStatement statement =
+                    connection.prepareStatement(sql);
+
+            statement.setInt(1, serviceId);
 
             statement.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

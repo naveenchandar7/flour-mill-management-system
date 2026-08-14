@@ -55,4 +55,7 @@ public class BillItem {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+    public double calculateAmount() {
+        return quantity * rate;
+    }
 }

@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 public class ElectricityUsageDAO {
 
     // CREATE
-    public void addElectricityUsage(ElectricityUsage usage) {
+    public void addUsage(ElectricityUsage usage) {
 
         String sql = "INSERT INTO electricity_usage " +
                 "(usage_date, start_unit, end_unit, units_used, rate_per_unit, electricity_cost) " +
@@ -135,5 +135,32 @@ public class ElectricityUsageDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public double getTotalElectricityCost() {
+
+        String sql =
+                "SELECT COALESCE(SUM(electricity_cost), 0) " +
+                        "FROM electricity_usage";
+
+        try {
+
+            Connection connection =
+                    DatabaseConnection.getConnection();
+
+            PreparedStatement statement =
+                    connection.prepareStatement(sql);
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getDouble(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }
